@@ -244,7 +244,7 @@ function renderCalendars(){
 }
 
 document.getElementById('btn-reset').addEventListener('click',async()=>{
-  if(!confirm('모든 기록을 초기화할까요?'))return;
+  if(!confirm('모든 기록을 초기화할까요??'))return;
   state={}; saveLocal(state);
   if(dbRef){try{await dbRef.set(null);}catch(e){setSyncStatus('err','초기화 실패');}}
   renderCalendars(); renderStats();
