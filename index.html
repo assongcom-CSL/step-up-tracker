@@ -11,68 +11,78 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
   <style>
     :root {
-      --bg: #ffffff; --surface: #f6f8fc; --surface2: #e8ebf5;
-      --border: #dde2ee; --text: #1a1f2e; --text-muted: #7a8299; --text-dim: #b8bfcc;
-      --blue1: #dbeafe; --blue2: #93c5fd; --blue3: #3b82f6; --blue4: #1d4ed8;
-      --accent: #3b82f6; --red: #f87171; --green: #4ade80;
+      --bg:#ffffff; --surface:#f6f8fc; --surface2:#e8ebf5;
+      --border:#dde2ee; --text:#1a1f2e; --text-muted:#7a8299; --text-dim:#b8bfcc;
+      --blue1:#dbeafe; --blue2:#93c5fd; --blue3:#3b82f6; --blue4:#1d4ed8;
+      --accent:#3b82f6; --red:#f87171; --green:#4ade80;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
-    html,body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;}
 
-    header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:0.45rem 1.2rem; border-bottom:1px solid var(--border);
-      background:var(--bg); position:sticky; top:0; z-index:10; gap:0.8rem;
+    header{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0.45rem 1.2rem;border-bottom:1px solid var(--border);
+      background:var(--bg);position:sticky;top:0;z-index:10;gap:0.8rem;
     }
-    .header-left { display:flex; align-items:center; gap:1rem; flex:1; min-width:0; }
-    h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.3rem,2vw,2rem); letter-spacing:0.04em; line-height:1; white-space:nowrap; flex-shrink:0; }
-    h1 span { color:var(--accent); }
-    .stats-inline { display:flex; align-items:center; gap:0.7rem; flex-wrap:wrap; }
-    .stat-pill { display:flex; align-items:baseline; gap:3px; font-size:0.68rem; color:var(--text-muted); white-space:nowrap; }
-    .stat-pill strong { font-family:'Bebas Neue',sans-serif; font-size:0.98rem; color:var(--accent); font-weight:400; }
-    .stat-div { width:1px; height:11px; background:var(--border); flex-shrink:0; }
-    .legend-inline { display:flex; align-items:center; gap:3px; flex-shrink:0; }
-    .legend-dot { width:10px; height:10px; border-radius:2px; }
-    .legend-dot.l0{background:var(--surface2)} .legend-dot.l1{background:var(--blue1)}
-    .legend-dot.l2{background:var(--blue2)}   .legend-dot.l3{background:var(--blue3)}
+    .header-left{display:flex;align-items:center;gap:1rem;flex:1;min-width:0;}
+    h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.3rem,2vw,2rem);
+       letter-spacing:0.04em;line-height:1;white-space:nowrap;flex-shrink:0;}
+    h1 span{color:var(--accent);}
+    .stats-inline{display:flex;align-items:center;gap:0.7rem;flex-wrap:wrap;}
+    .stat-pill{display:flex;align-items:baseline;gap:3px;font-size:0.68rem;color:var(--text-muted);white-space:nowrap;}
+    .stat-pill strong{font-family:'Bebas Neue',sans-serif;font-size:0.98rem;color:var(--accent);font-weight:400;}
+    .stat-div{width:1px;height:11px;background:var(--border);flex-shrink:0;}
+    .legend-inline{display:flex;align-items:center;gap:3px;flex-shrink:0;}
+    .legend-dot{width:10px;height:10px;border-radius:2px;}
+    .legend-dot.l0{background:var(--surface2)}.legend-dot.l1{background:var(--blue1)}
+    .legend-dot.l2{background:var(--blue2)}.legend-dot.l3{background:var(--blue3)}
     .legend-dot.l4{background:var(--blue4)}
-    .legend-arr { font-size:0.58rem; color:var(--text-dim); }
-    .header-right { display:flex; align-items:center; gap:0.5rem; flex-shrink:0; }
-    #clock { font-family:'Bebas Neue',sans-serif; font-size:clamp(1.1rem,1.8vw,1.7rem); letter-spacing:0.06em; color:var(--accent); line-height:1; }
-    #date-str { font-size:0.64rem; color:var(--text-muted); letter-spacing:0.07em; text-transform:uppercase; }
-    #sync-status { display:flex; align-items:center; gap:5px; font-size:0.62rem; color:var(--text-dim); white-space:nowrap; }
-    #sync-dot { width:7px; height:7px; border-radius:50%; background:var(--text-dim); transition:background 0.3s; flex-shrink:0; }
-    #sync-dot.ok{background:var(--green)} #sync-dot.err{background:var(--red)}
+    .legend-arr{font-size:0.58rem;color:var(--text-dim);}
+    .header-right{display:flex;align-items:center;gap:0.5rem;flex-shrink:0;}
+    #clock{font-family:'Bebas Neue',sans-serif;font-size:clamp(1.1rem,1.8vw,1.7rem);
+           letter-spacing:0.06em;color:var(--accent);line-height:1;}
+    #date-str{font-size:0.64rem;color:var(--text-muted);letter-spacing:0.07em;text-transform:uppercase;}
+    #sync-status{display:flex;align-items:center;gap:5px;font-size:0.62rem;color:var(--text-dim);white-space:nowrap;}
+    #sync-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);transition:background 0.3s;flex-shrink:0;}
+    #sync-dot.ok{background:var(--green)}
+    #sync-dot.err{background:var(--red)}
     #sync-dot.loading{background:#facc15;animation:pulse 0.8s infinite}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-    .icon-btn { background:none; border:1px solid var(--border); color:var(--text-muted); font-size:0.6rem; letter-spacing:0.06em; text-transform:uppercase; padding:3px 8px; border-radius:4px; cursor:pointer; transition:border-color 0.15s,color 0.15s; white-space:nowrap; font-family:'DM Sans',sans-serif; }
-    .icon-btn.danger:hover { border-color:var(--red); color:var(--red); }
+    .icon-btn{background:none;border:1px solid var(--border);color:var(--text-muted);
+      font-size:0.6rem;letter-spacing:0.06em;text-transform:uppercase;padding:3px 8px;
+      border-radius:4px;cursor:pointer;transition:border-color 0.15s,color 0.15s;
+      white-space:nowrap;font-family:'DM Sans',sans-serif;}
+    .icon-btn.danger:hover{border-color:var(--red);color:var(--red);}
 
-    .year-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:0.55rem; padding:0.55rem 1.2rem 1rem; }
-    .month-card { background:var(--surface); border:1px solid var(--border); border-radius:7px; padding:0.5rem 0.55rem 0.55rem; transition:border-color 0.2s; }
-    .month-card.is-current { border-color:var(--accent); }
-    .month-header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:0.35rem; }
-    .month-name { font-family:'Bebas Neue',sans-serif; font-size:0.9rem; letter-spacing:0.07em; color:var(--text-muted); }
-    .month-card.is-current .month-name { color:var(--accent); }
-    .month-count { font-size:0.54rem; color:var(--text-dim); }
-    .month-card.is-current .month-count { color:var(--blue3); }
-    .dow-row { display:grid; grid-template-columns:repeat(7,1fr); gap:1.5px; margin-bottom:1.5px; }
-    .dow-cell { text-align:center; font-size:0.48rem; color:var(--text-dim); padding:1px 0; }
-    .dow-cell.sun{color:#f87171} .dow-cell.sat{color:#93c5fd}
-    .day-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:1.5px; }
-    .day-cell { aspect-ratio:1; border-radius:2px; cursor:pointer; transition:transform 0.08s,opacity 0.1s; position:relative; }
+    .year-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.55rem;padding:0.55rem 1.2rem 1rem;}
+    .month-card{background:var(--surface);border:1px solid var(--border);border-radius:7px;
+      padding:0.5rem 0.55rem 0.55rem;transition:border-color 0.2s;}
+    .month-card.is-current{border-color:var(--accent);}
+    .month-header{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0.35rem;}
+    .month-name{font-family:'Bebas Neue',sans-serif;font-size:0.9rem;letter-spacing:0.07em;color:var(--text-muted);}
+    .month-card.is-current .month-name{color:var(--accent);}
+    .month-count{font-size:0.54rem;color:var(--text-dim);}
+    .month-card.is-current .month-count{color:var(--blue3);}
+    .dow-row{display:grid;grid-template-columns:repeat(7,1fr);gap:1.5px;margin-bottom:1.5px;}
+    .dow-cell{text-align:center;font-size:0.48rem;color:var(--text-dim);padding:1px 0;}
+    .dow-cell.sun{color:#f87171}.dow-cell.sat{color:#93c5fd}
+    .day-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:1.5px;}
+    .day-cell{aspect-ratio:1;border-radius:2px;cursor:pointer;transition:transform 0.08s,opacity 0.1s;position:relative;}
     .day-cell:active{transform:scale(0.82)}
-    .day-cell.empty{background:transparent;cursor:default;pointer-events:none}
-    .day-cell.l0{background:var(--surface2)} .day-cell.l1{background:var(--blue1)}
-    .day-cell.l2{background:var(--blue2)}    .day-cell.l3{background:var(--blue3)}
+    .day-cell.empty{background:transparent;cursor:default;pointer-events:none;}
+    .day-cell.l0{background:var(--surface2)}.day-cell.l1{background:var(--blue1)}
+    .day-cell.l2{background:var(--blue2)}.day-cell.l3{background:var(--blue3)}
     .day-cell.l4{background:var(--blue4)}
-    .day-cell.today::after{content:'';position:absolute;inset:-2px;border-radius:4px;border:2px solid var(--accent);pointer-events:none}
-    .day-cell:hover:not(.empty){opacity:0.72}
-    @media(max-width:900px){.year-grid{grid-template-columns:repeat(3,1fr)}}
-    @media(max-width:600px){.year-grid{grid-template-columns:repeat(2,1fr);padding:0.5rem}header{flex-wrap:wrap;padding:0.5rem 0.7rem}}
+    .day-cell.today::after{content:'';position:absolute;inset:-2px;border-radius:4px;
+      border:2px solid var(--accent);pointer-events:none;}
+    .day-cell:hover:not(.empty){opacity:0.72;}
+    @media(max-width:900px){.year-grid{grid-template-columns:repeat(3,1fr);}}
+    @media(max-width:600px){.year-grid{grid-template-columns:repeat(2,1fr);padding:0.5rem;}
+      header{flex-wrap:wrap;padding:0.5rem 0.7rem;}}
   </style>
 </head>
 <body>
+
 <header>
   <div class="header-left">
     <h1><span>Assong</span>'s Step Up Tracker</h1>
@@ -104,163 +114,235 @@
     <button class="icon-btn danger" id="btn-reset">Reset</button>
   </div>
 </header>
+
 <div class="year-grid" id="year-grid"></div>
 
 <script>
-// ── Firebase config injected by GitHub Actions at build time ──
+/* ═══════════════════════════════════════════
+   Firebase config — 도메인 제한으로 보안 처리
+   (Firebase Console > API 제한 > HTTP 리퍼러)
+═══════════════════════════════════════════ */
 const FIREBASE_CONFIG = {
-  apiKey:            "%%FIREBASE_API_KEY%%",
-  authDomain:        "%%FIREBASE_AUTH_DOMAIN%%",
-  databaseURL:       "%%FIREBASE_DATABASE_URL%%",
-  projectId:         "%%FIREBASE_PROJECT_ID%%",
-  storageBucket:     "%%FIREBASE_STORAGE_BUCKET%%",
-  messagingSenderId: "%%FIREBASE_MESSAGING_SENDER_ID%%",
-  appId:             "%%FIREBASE_APP_ID%%"
+  apiKey:            "AIzaSyBmAvPG55flO30aeZGaFFAC88A08IPuqTw",
+  authDomain:        "step-up-tracker.firebaseapp.com",
+  databaseURL:       "https://step-up-tracker-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId:         "step-up-tracker",
+  storageBucket:     "step-up-tracker.firebasestorage.app",
+  messagingSenderId: "37754241844",
+  appId:             "1:37754241844:web:9a037fb0e8af2422469b61"
 };
 
-const DB_PATH      = 'tracker/2026';
-const MONTH_NAMES  = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-const DOW          = ['S','M','T','W','T','F','S'];
-const LS_KEY       = 'assong_v5';
+/* ═══════════════════════════════════════════
+   App constants
+═══════════════════════════════════════════ */
+const MONTH_NAMES = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const DOW         = ['S','M','T','W','T','F','S'];
+const LS_KEY      = 'assong_v5';
+const DB_PATH     = 'tracker/2026';
 
-const _now         = new Date();
-const currentYear  = _now.getFullYear();
-const currentMonth = _now.getMonth();
-const currentDay   = _now.getDate();
+const _now        = new Date();
+const CY          = _now.getFullYear();   // current year
+const CM          = _now.getMonth();      // current month
+const CD          = _now.getDate();       // current day
 
 let state = {};
 let dbRef = null;
 
+/* ── local cache ── */
 function loadLocal()  { try{return JSON.parse(localStorage.getItem(LS_KEY)||'{}')}catch{return{}} }
 function saveLocal(s) { try{localStorage.setItem(LS_KEY,JSON.stringify(s))}catch{} }
 
+/* ── sync indicator ── */
 function setSyncStatus(cls, label) {
   document.getElementById('sync-dot').className = cls;
   document.getElementById('sync-label').textContent = label;
 }
 
+/* ═══════════════════════════════════════════
+   Firebase — init & real-time listener
+═══════════════════════════════════════════ */
 function startFirebase() {
   try {
     const app = firebase.initializeApp(FIREBASE_CONFIG);
     const db  = firebase.database(app);
     dbRef     = db.ref(DB_PATH);
+
+    // 모든 클라이언트가 실시간으로 동일 데이터 수신
     dbRef.on('value', snapshot => {
       const remote = snapshot.val() || {};
+      // Firebase 키는 언더스코어, 로컬은 대시로 변환
       const converted = {};
-      Object.keys(remote).forEach(k => { converted[k.replace(/_/g,'-')] = remote[k]; });
+      Object.keys(remote).forEach(k => {
+        converted[k.replace(/_/g, '-')] = remote[k];
+      });
       state = converted;
       saveLocal(state);
       renderCalendars();
       renderStats();
-      setSyncStatus('ok','실시간 동기화');
+      setSyncStatus('ok', '실시간 동기화');
     }, err => {
       console.error(err);
-      setSyncStatus('err','연결 오류');
+      setSyncStatus('err', '연결 오류');
     });
   } catch(e) {
     console.error(e);
-    setSyncStatus('err','설정 오류');
+    setSyncStatus('err', '설정 오류');
   }
 }
 
+/* ── 단일 날짜 쓰기 ── */
 async function writeDay(localKey, value) {
   if (!dbRef) return;
-  const fbKey = localKey.replace(/-/g,'_');
-  try { await dbRef.child(fbKey).set(value === 0 ? null : value); }
-  catch(e) { console.error(e); setSyncStatus('err','저장 실패'); }
-}
-
-function dateKey(m,d){ return `${currentYear}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
-function daysInMonth(m){ return new Date(currentYear,m+1,0).getDate(); }
-function firstDow(m){ return new Date(currentYear,m,1).getDay(); }
-
-function computeStats() {
-  let total=0,activeDays=0;
-  Object.values(state).forEach(v=>{total+=v;if(v>0)activeDays++;});
-  let streak=0,d=new Date(currentYear,currentMonth,currentDay);
-  while(true){
-    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    if(!state[k])break; streak++; d.setDate(d.getDate()-1);
+  const fbKey = localKey.replace(/-/g, '_'); // 2026-04-28 → 2026_04_28
+  try {
+    await dbRef.child(fbKey).set(value === 0 ? null : value);
+  } catch(e) {
+    console.error(e);
+    setSyncStatus('err', '저장 실패');
   }
-  let best=0,run=0;
-  const keys=Object.keys(state).filter(k=>state[k]>0).sort();
-  keys.forEach((k,i)=>{
-    if(i===0){run=1;best=1;return;}
-    const diff=(new Date(k)-new Date(keys[i-1]))/86400000;
-    if(diff===1){run++;if(run>best)best=run;}else run=1;
+}
+
+/* ═══════════════════════════════════════════
+   Helpers
+═══════════════════════════════════════════ */
+function dateKey(m, d) {
+  return `${CY}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+}
+function daysInMonth(m) { return new Date(CY, m+1, 0).getDate(); }
+function firstDow(m)    { return new Date(CY, m, 1).getDay(); }
+
+/* ═══════════════════════════════════════════
+   Stats
+═══════════════════════════════════════════ */
+function computeStats() {
+  let total = 0, activeDays = 0;
+  Object.values(state).forEach(v => { total += v; if (v > 0) activeDays++; });
+
+  let streak = 0, d = new Date(CY, CM, CD);
+  while (true) {
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if (!state[k]) break;
+    streak++; d.setDate(d.getDate() - 1);
+  }
+
+  let best = 0, run = 0;
+  const keys = Object.keys(state).filter(k => state[k] > 0).sort();
+  keys.forEach((k, i) => {
+    if (i === 0) { run = 1; best = 1; return; }
+    const diff = (new Date(k) - new Date(keys[i-1])) / 86400000;
+    if (diff === 1) { run++; if (run > best) best = run; } else run = 1;
   });
-  return{total,activeDays,streak,best};
+  return { total, activeDays, streak, best };
 }
 
-function renderStats(){
-  const s=computeStats();
-  document.getElementById('stat-total').textContent=s.total;
-  document.getElementById('stat-days').textContent=s.activeDays;
-  document.getElementById('stat-streak').textContent=s.streak;
-  document.getElementById('stat-best').textContent=s.best;
+function renderStats() {
+  const s = computeStats();
+  document.getElementById('stat-total').textContent  = s.total;
+  document.getElementById('stat-days').textContent   = s.activeDays;
+  document.getElementById('stat-streak').textContent = s.streak;
+  document.getElementById('stat-best').textContent   = s.best;
 }
 
-function renderCalendars(){
-  const grid=document.getElementById('year-grid');
-  grid.innerHTML='';
-  for(let m=0;m<12;m++){
-    const isCurrent=(m===currentMonth);
-    const days=daysInMonth(m), offset=firstDow(m);
-    let mActive=0;
-    for(let d=1;d<=days;d++) if((state[dateKey(m,d)]||0)>0) mActive++;
-    const card=document.createElement('div');
-    card.className='month-card'+(isCurrent?' is-current':'');
-    const hdr=document.createElement('div');
-    hdr.className='month-header';
-    hdr.innerHTML=`<div class="month-name">${MONTH_NAMES[m]}</div><div class="month-count">${mActive>0?mActive+'d':''}</div>`;
+/* ═══════════════════════════════════════════
+   Calendar render
+═══════════════════════════════════════════ */
+function renderCalendars() {
+  const grid = document.getElementById('year-grid');
+  grid.innerHTML = '';
+
+  for (let m = 0; m < 12; m++) {
+    const isCurrent = (m === CM);
+    const days = daysInMonth(m), offset = firstDow(m);
+    let mActive = 0;
+    for (let d = 1; d <= days; d++) if ((state[dateKey(m,d)] || 0) > 0) mActive++;
+
+    const card = document.createElement('div');
+    card.className = 'month-card' + (isCurrent ? ' is-current' : '');
+
+    const hdr = document.createElement('div');
+    hdr.className = 'month-header';
+    hdr.innerHTML = `<div class="month-name">${MONTH_NAMES[m]}</div>` +
+                    `<div class="month-count">${mActive > 0 ? mActive+'d' : ''}</div>`;
     card.appendChild(hdr);
-    const dowRow=document.createElement('div');
-    dowRow.className='dow-row';
-    DOW.forEach((label,i)=>{
-      const c=document.createElement('div');
-      c.className='dow-cell'+(i===0?' sun':i===6?' sat':'');
-      c.textContent=label; dowRow.appendChild(c);
+
+    const dowRow = document.createElement('div');
+    dowRow.className = 'dow-row';
+    DOW.forEach((label, i) => {
+      const c = document.createElement('div');
+      c.className = 'dow-cell' + (i===0 ? ' sun' : i===6 ? ' sat' : '');
+      c.textContent = label;
+      dowRow.appendChild(c);
     });
     card.appendChild(dowRow);
-    const dayGrid=document.createElement('div');
-    dayGrid.className='day-grid';
-    for(let i=0;i<offset;i++){const e=document.createElement('div');e.className='day-cell empty';dayGrid.appendChild(e);}
-    for(let d=1;d<=days;d++){
-      const k=dateKey(m,d), level=state[k]||0;
-      const cell=document.createElement('div');
-      cell.className=`day-cell l${level}`+(isCurrent&&d===currentDay?' today':'');
-      cell.title=`${MONTH_NAMES[m]} ${d} · Lv${level}`;
-      cell.addEventListener('click',async()=>{
-        const next=((state[k]||0)+1)%5;
-        state[k]=next; saveLocal(state);
-        await writeDay(k,next);
-        renderCalendars(); renderStats();
+
+    const dayGrid = document.createElement('div');
+    dayGrid.className = 'day-grid';
+
+    for (let i = 0; i < offset; i++) {
+      const e = document.createElement('div');
+      e.className = 'day-cell empty';
+      dayGrid.appendChild(e);
+    }
+
+    for (let d = 1; d <= days; d++) {
+      const k     = dateKey(m, d);
+      const level = state[k] || 0;
+      const cell  = document.createElement('div');
+      cell.className = `day-cell l${level}` + (isCurrent && d === CD ? ' today' : '');
+      cell.title     = `${MONTH_NAMES[m]} ${d}  ·  Lv ${level}`;
+      cell.addEventListener('click', async () => {
+        const next = ((state[k] || 0) + 1) % 5;
+        state[k] = next;
+        saveLocal(state);
+        renderCalendars();
+        renderStats();
+        await writeDay(k, next);
       });
       dayGrid.appendChild(cell);
     }
+
     card.appendChild(dayGrid);
     grid.appendChild(card);
   }
 }
 
-document.getElementById('btn-reset').addEventListener('click',async()=>{
-  if(!confirm('모든 기록을 초기화할까요??'))return;
-  state={}; saveLocal(state);
-  if(dbRef){try{await dbRef.set(null);}catch(e){setSyncStatus('err','초기화 실패');}}
-  renderCalendars(); renderStats();
+/* ═══════════════════════════════════════════
+   Reset
+═══════════════════════════════════════════ */
+document.getElementById('btn-reset').addEventListener('click', async () => {
+  if (!confirm('모든 기록을 초기화할까요?')) return;
+  state = {};
+  saveLocal(state);
+  renderCalendars();
+  renderStats();
+  if (dbRef) {
+    try { await dbRef.set(null); }
+    catch(e) { setSyncStatus('err', '초기화 실패'); }
+  }
 });
 
-function updateClock(){
-  const n=new Date();
-  document.getElementById('clock').textContent=`${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
-  const WD=['SUN','MON','TUE','WED','THU','FRI','SAT'];
-  const MO=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  document.getElementById('date-str').textContent=`${WD[n.getDay()]} ${n.getDate()} ${MO[n.getMonth()]} ${n.getFullYear()}`;
+/* ═══════════════════════════════════════════
+   Clock
+═══════════════════════════════════════════ */
+function updateClock() {
+  const n = new Date();
+  document.getElementById('clock').textContent =
+    `${String(n.getHours()).padStart(2,'0')}:${String(n.getMinutes()).padStart(2,'0')}:${String(n.getSeconds()).padStart(2,'0')}`;
+  const WD = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const MO = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  document.getElementById('date-str').textContent =
+    `${WD[n.getDay()]} ${n.getDate()} ${MO[n.getMonth()]} ${n.getFullYear()}`;
 }
 
-state=loadLocal(); renderCalendars(); renderStats();
-setInterval(updateClock,1000); updateClock();
-startFirebase();
+/* ═══════════════════════════════════════════
+   Boot
+═══════════════════════════════════════════ */
+state = loadLocal();   // 캐시 즉시 표시
+renderCalendars();
+renderStats();
+setInterval(updateClock, 1000);
+updateClock();
+startFirebase();       // Firebase 연결
 </script>
 </body>
 </html>
