@@ -11,7 +11,7 @@
     :root {
       --bg: #ffffff;
       --surface: #f6f8fc;
-      --surface2: #eaecf4;
+      --surface2: #e8ebf5;
       --border: #dde2ee;
       --text: #1a1f2e;
       --text-muted: #7a8299;
@@ -21,245 +21,182 @@
       --blue3: #3b82f6;
       --blue4: #1d4ed8;
       --accent: #3b82f6;
+      --red: #f87171;
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
 
-    html, body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-    }
-
-    /* HEADER */
+    /* ─── HEADER ─── */
     header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.65rem 1.6rem;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.45rem 1.2rem;
       border-bottom: 1px solid var(--border);
       background: var(--bg);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      gap: 1rem;
-      flex-wrap: nowrap;
+      position: sticky; top: 0; z-index: 10;
+      gap: 0.8rem; flex-wrap: nowrap;
     }
-
-    .header-left {
-      display: flex;
-      align-items: center;
-      gap: 1.4rem;
-      flex: 1;
-      min-width: 0;
-      overflow: hidden;
-    }
-
+    .header-left { display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 0; overflow: hidden; }
     h1 {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.5rem, 2.5vw, 2.4rem);
-      letter-spacing: 0.04em;
-      line-height: 1;
-      white-space: nowrap;
-      flex-shrink: 0;
+      font-size: clamp(1.3rem, 2vw, 2rem);
+      letter-spacing: 0.04em; line-height: 1; white-space: nowrap; flex-shrink: 0;
     }
     h1 span { color: var(--accent); }
 
-    .stats-inline {
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-      flex-wrap: wrap;
-    }
+    .stats-inline { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
+    .stat-pill { display: flex; align-items: baseline; gap: 3px; font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; }
+    .stat-pill strong { font-family: 'Bebas Neue', sans-serif; font-size: 0.98rem; letter-spacing: 0.04em; color: var(--accent); font-weight: 400; }
+    .stat-div { width: 1px; height: 11px; background: var(--border); flex-shrink: 0; }
 
-    .stat-pill {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-      font-size: 0.72rem;
-      color: var(--text-muted);
-      white-space: nowrap;
-    }
-
-    .stat-pill strong {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.05rem;
-      letter-spacing: 0.04em;
-      color: var(--accent);
-      font-weight: 400;
-    }
-
-    .stat-div {
-      width: 1px;
-      height: 12px;
-      background: var(--border);
-      flex-shrink: 0;
-    }
-
-    .legend-inline {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      flex-shrink: 0;
-    }
-
-    .legend-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 2px;
-    }
+    .legend-inline { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+    .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
     .legend-dot.l0 { background: var(--surface2); }
     .legend-dot.l1 { background: var(--blue1); }
     .legend-dot.l2 { background: var(--blue2); }
     .legend-dot.l3 { background: var(--blue3); }
     .legend-dot.l4 { background: var(--blue4); }
+    .legend-arr { font-size: 0.58rem; color: var(--text-dim); }
 
-    .legend-arr { font-size: 0.6rem; color: var(--text-dim); }
+    .header-right { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+    #clock { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.1rem, 1.8vw, 1.7rem); letter-spacing: 0.06em; color: var(--accent); line-height: 1; }
+    #date-str { font-size: 0.64rem; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; }
 
-    .header-right {
-      display: flex;
-      align-items: baseline;
-      gap: 0.6rem;
-      flex-shrink: 0;
+    .icon-btn {
+      background: none; border: 1px solid var(--border); color: var(--text-dim);
+      font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 4px; cursor: pointer;
+      transition: border-color 0.15s, color 0.15s; white-space: nowrap;
     }
+    .icon-btn:hover { border-color: var(--blue3); color: var(--blue3); }
+    .icon-btn.danger:hover { border-color: var(--red); color: var(--red); }
 
-    #clock {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.2rem, 2vw, 1.9rem);
-      letter-spacing: 0.06em;
-      color: var(--accent);
-      line-height: 1;
+    /* sync status dot */
+    #sync-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+      background: var(--text-dim); transition: background 0.3s;
     }
+    #sync-dot.ok { background: #4ade80; }
+    #sync-dot.err { background: var(--red); }
+    #sync-dot.loading { background: #facc15; animation: pulse 0.8s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
 
-    #date-str {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-    }
-
-    .reset-btn {
-      background: none;
-      border: 1px solid var(--border);
-      color: var(--text-dim);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.62rem;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      padding: 3px 9px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: border-color 0.15s, color 0.15s;
-    }
-    .reset-btn:hover { border-color: var(--blue3); color: var(--blue3); }
-
-    /* YEAR GRID: 4 cols x 3 rows */
+    /* ─── YEAR GRID: 4×3 ─── */
     .year-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 0.8rem;
-      padding: 0.8rem 1.6rem 1.6rem;
+      gap: 0.55rem;
+      padding: 0.55rem 1.2rem 1rem;
     }
 
-    /* MONTH CARD */
+    /* ─── MONTH CARD ─── */
     .month-card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 9px;
-      padding: 0.65rem 0.7rem 0.7rem;
+      border-radius: 7px;
+      padding: 0.5rem 0.55rem 0.55rem;
       transition: border-color 0.2s;
     }
     .month-card.is-current { border-color: var(--accent); }
 
-    .month-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 0.45rem;
-    }
-
-    .month-name {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.05rem;
-      letter-spacing: 0.07em;
-      color: var(--text-muted);
-    }
+    .month-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.35rem; }
+    .month-name { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 0.07em; color: var(--text-muted); }
     .month-card.is-current .month-name { color: var(--accent); }
-
-    .month-count {
-      font-size: 0.58rem;
-      color: var(--text-dim);
-      letter-spacing: 0.05em;
-    }
+    .month-count { font-size: 0.54rem; color: var(--text-dim); letter-spacing: 0.05em; }
     .month-card.is-current .month-count { color: var(--blue3); }
 
-    /* DOW row */
-    .dow-row {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 2px;
-      margin-bottom: 2px;
-    }
-
-    .dow-cell {
-      text-align: center;
-      font-size: 0.52rem;
-      color: var(--text-dim);
-      letter-spacing: 0.03em;
-      padding: 1px 0;
-    }
+    .dow-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.5px; margin-bottom: 1.5px; }
+    .dow-cell { text-align: center; font-size: 0.48rem; color: var(--text-dim); padding: 1px 0; }
     .dow-cell.sun { color: #f87171; }
     .dow-cell.sat { color: #93c5fd; }
 
-    /* DAY GRID */
-    .day-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 2px;
-    }
-
-    .day-cell {
-      aspect-ratio: 1;
-      border-radius: 2px;
-      cursor: pointer;
-      transition: transform 0.08s, opacity 0.1s;
-      position: relative;
-    }
-    .day-cell:active { transform: scale(0.85); }
-
-    .day-cell.empty {
-      background: transparent;
-      cursor: default;
-      pointer-events: none;
-    }
-
+    .day-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.5px; }
+    .day-cell { aspect-ratio: 1; border-radius: 2px; cursor: pointer; transition: transform 0.08s, opacity 0.1s; position: relative; }
+    .day-cell:active { transform: scale(0.82); }
+    .day-cell.empty { background: transparent; cursor: default; pointer-events: none; }
     .day-cell.l0 { background: var(--surface2); }
     .day-cell.l1 { background: var(--blue1); }
     .day-cell.l2 { background: var(--blue2); }
     .day-cell.l3 { background: var(--blue3); }
     .day-cell.l4 { background: var(--blue4); }
-
     .day-cell.today::after {
-      content: '';
-      position: absolute;
-      inset: -2px;
-      border-radius: 4px;
-      border: 2px solid var(--accent);
-      pointer-events: none;
+      content: ''; position: absolute; inset: -2px; border-radius: 4px;
+      border: 2px solid var(--accent); pointer-events: none;
     }
+    .day-cell:hover:not(.empty) { opacity: 0.72; }
 
-    .day-cell:hover:not(.empty) { opacity: 0.75; }
-
-    @media (max-width: 900px) {
-      .year-grid { grid-template-columns: repeat(3, 1fr); }
+    /* ─── SETUP MODAL ─── */
+    .modal-bg {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.35); z-index: 100;
+      align-items: center; justify-content: center;
     }
+    .modal-bg.open { display: flex; }
+    .modal {
+      background: #fff; border: 1px solid var(--border); border-radius: 12px;
+      padding: 1.8rem 2rem; width: min(480px, 92vw); box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    }
+    .modal h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+    .modal h2 span { color: var(--accent); }
+    .modal p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.2rem; }
+    .modal p a { color: var(--blue3); }
+    .modal label { display: block; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+    .modal input {
+      width: 100%; border: 1px solid var(--border); border-radius: 6px;
+      padding: 7px 10px; font-size: 0.82rem; font-family: 'DM Sans', sans-serif;
+      color: var(--text); outline: none; margin-bottom: 0.9rem;
+      transition: border-color 0.15s;
+    }
+    .modal input:focus { border-color: var(--blue3); }
+    .modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 0.5rem; }
+    .btn-primary {
+      background: var(--blue3); color: #fff; border: none;
+      padding: 7px 18px; border-radius: 6px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem; cursor: pointer; transition: background 0.15s;
+    }
+    .btn-primary:hover { background: var(--blue4); }
+    .btn-secondary {
+      background: none; border: 1px solid var(--border); color: var(--text-muted);
+      padding: 7px 14px; border-radius: 6px; font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem; cursor: pointer; transition: border-color 0.15s;
+    }
+    .btn-secondary:hover { border-color: var(--blue3); color: var(--blue3); }
+    .modal-note { font-size: 0.68rem; color: var(--text-dim); line-height: 1.5; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--border); }
+    .modal-note code { background: var(--surface2); padding: 1px 4px; border-radius: 3px; font-size: 0.66rem; }
+
+    @media (max-width: 900px) { .year-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 600px) {
-      .year-grid { grid-template-columns: repeat(2, 1fr); padding: 0.6rem; }
-      header { flex-wrap: wrap; padding: 0.5rem 0.8rem; }
+      .year-grid { grid-template-columns: repeat(2, 1fr); padding: 0.5rem; }
+      header { flex-wrap: wrap; padding: 0.5rem 0.7rem; }
     }
   </style>
 </head>
 <body>
+
+<!-- SETUP MODAL -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h2><span>Cloud</span> Sync 설정</h2>
+    <p>
+      JSONBin.io를 이용해 데이터를 클라우드에 저장합니다.<br>
+      <a href="https://jsonbin.io" target="_blank">jsonbin.io</a>에서 무료 계정을 만들고 API Key를 발급받으세요.
+    </p>
+    <label>JSONBin Master Key (X-Master-Key)</label>
+    <input type="password" id="input-apikey" placeholder="$2a$10$..." autocomplete="off" />
+    <label>Bin ID <span style="font-weight:300;text-transform:none;">(처음이면 비워두세요 — 자동 생성)</span></label>
+    <input type="text" id="input-binid" placeholder="자동 생성됨" autocomplete="off" />
+    <div class="modal-actions">
+      <button class="btn-secondary" id="modal-cancel">취소</button>
+      <button class="btn-primary" id="modal-save">저장 &amp; 연결</button>
+    </div>
+    <div class="modal-note">
+      <strong>설정 방법:</strong><br>
+      1. <a href="https://jsonbin.io" target="_blank" style="color:var(--blue3)">jsonbin.io</a> 가입 후 <code>API Keys</code> 메뉴에서 <code>Master Key</code> 복사<br>
+      2. 위 입력창에 붙여넣고 <em>저장 &amp; 연결</em> 클릭<br>
+      3. Bin ID는 첫 저장 시 자동 생성됩니다 (이후 표시됨)<br>
+      4. 다른 기기에서 사용 시 동일한 API Key + Bin ID 입력
+    </div>
+  </div>
+</div>
 
 <header>
   <div class="header-left">
@@ -267,7 +204,7 @@
     <div class="stats-inline">
       <div class="stat-pill"><strong id="stat-total">0</strong> logs</div>
       <div class="stat-div"></div>
-      <div class="stat-pill"><strong id="stat-days">0</strong> active days</div>
+      <div class="stat-pill"><strong id="stat-days">0</strong> active</div>
       <div class="stat-div"></div>
       <div class="stat-pill"><strong id="stat-streak">0</strong> streak</div>
       <div class="stat-div"></div>
@@ -287,97 +224,220 @@
     </div>
   </div>
   <div class="header-right">
+    <div id="sync-dot" title="동기화 상태"></div>
     <div id="clock">00:00:00</div>
     <div id="date-str">Loading...</div>
-    <button class="reset-btn" id="reset-btn">Reset</button>
+    <button class="icon-btn" id="btn-sync" title="수동 동기화">↻ Sync</button>
+    <button class="icon-btn" id="btn-settings">⚙ Cloud</button>
+    <button class="icon-btn danger" id="btn-reset">Reset</button>
   </div>
 </header>
 
 <div class="year-grid" id="year-grid"></div>
 
 <script>
+/* ════════════════════════════════
+   CONFIG & STATE
+════════════════════════════════ */
 const MONTH_NAMES = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
 const DOW = ['S','M','T','W','T','F','S'];
-const STORAGE_KEY = 'assong_tracker_v2';
+const LS_STATE   = 'assong_tracker_v3_state';
+const LS_APIKEY  = 'assong_tracker_v3_apikey';
+const LS_BINID   = 'assong_tracker_v3_binid';
+const JSONBIN_URL = 'https://api.jsonbin.io/v3/b';
 
-function loadState() {
-  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
-}
-function saveState(s) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
-}
-
-let state = loadState();
 const now = new Date();
-const currentYear = now.getFullYear();
+const currentYear  = now.getFullYear();
 const currentMonth = now.getMonth();
-const currentDay = now.getDate();
+const currentDay   = now.getDate();
 
+let state   = loadLocal();
+let apiKey  = localStorage.getItem(LS_APIKEY) || '';
+let binId   = localStorage.getItem(LS_BINID)  || '';
+let syncTimer = null;
+
+/* ════════════════════════════════
+   LOCAL STORAGE
+════════════════════════════════ */
+function loadLocal() {
+  try { return JSON.parse(localStorage.getItem(LS_STATE) || '{}'); } catch { return {}; }
+}
+function saveLocal(s) {
+  try { localStorage.setItem(LS_STATE, JSON.stringify(s)); } catch {}
+}
+
+/* ════════════════════════════════
+   JSONBIN CLOUD SYNC
+════════════════════════════════ */
+function setSyncDot(status) {
+  const dot = document.getElementById('sync-dot');
+  dot.className = '';
+  if (status) dot.classList.add(status);
+}
+
+async function cloudRead() {
+  if (!apiKey || !binId) return null;
+  setSyncDot('loading');
+  try {
+    const res = await fetch(`${JSONBIN_URL}/${binId}/latest`, {
+      headers: { 'X-Master-Key': apiKey }
+    });
+    if (!res.ok) throw new Error(res.status);
+    const json = await res.json();
+    setSyncDot('ok');
+    return json.record || {};
+  } catch (e) {
+    setSyncDot('err');
+    return null;
+  }
+}
+
+async function cloudWrite(data) {
+  if (!apiKey) return;
+  setSyncDot('loading');
+  try {
+    if (!binId) {
+      // create new bin
+      const res = await fetch(JSONBIN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey, 'X-Bin-Name': "assong-tracker" },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error(res.status);
+      const json = await res.json();
+      binId = json.metadata.id;
+      localStorage.setItem(LS_BINID, binId);
+      document.getElementById('input-binid').value = binId;
+    } else {
+      const res = await fetch(`${JSONBIN_URL}/${binId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey },
+        body: JSON.stringify(data)
+      });
+      if (!res.ok) throw new Error(res.status);
+    }
+    setSyncDot('ok');
+  } catch (e) {
+    setSyncDot('err');
+  }
+}
+
+/* debounced write: waits 1.5s after last click */
+function scheduleCloudWrite() {
+  if (!apiKey) return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(() => cloudWrite(state), 1500);
+}
+
+async function manualSync() {
+  if (!apiKey) { openModal(); return; }
+  const remote = await cloudRead();
+  if (remote) {
+    // merge: take max level for each key
+    Object.keys(remote).forEach(k => {
+      state[k] = Math.max(state[k] || 0, remote[k] || 0);
+    });
+    saveLocal(state);
+    renderCalendars();
+    renderStats();
+  }
+}
+
+/* ════════════════════════════════
+   MODAL
+════════════════════════════════ */
+function openModal() {
+  document.getElementById('input-apikey').value = apiKey;
+  document.getElementById('input-binid').value  = binId;
+  document.getElementById('modal-bg').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal-bg').classList.remove('open');
+}
+
+document.getElementById('modal-cancel').addEventListener('click', closeModal);
+document.getElementById('modal-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+
+document.getElementById('modal-save').addEventListener('click', async () => {
+  apiKey = document.getElementById('input-apikey').value.trim();
+  binId  = document.getElementById('input-binid').value.trim();
+  localStorage.setItem(LS_APIKEY, apiKey);
+  localStorage.setItem(LS_BINID,  binId);
+  closeModal();
+  // immediately pull remote data
+  const remote = await cloudRead();
+  if (remote && Object.keys(remote).length > 0) {
+    Object.keys(remote).forEach(k => {
+      state[k] = Math.max(state[k] || 0, remote[k] || 0);
+    });
+    saveLocal(state);
+    renderCalendars();
+    renderStats();
+  } else if (apiKey) {
+    // push local data to new bin
+    await cloudWrite(state);
+  }
+});
+
+document.getElementById('btn-settings').addEventListener('click', openModal);
+document.getElementById('btn-sync').addEventListener('click', manualSync);
+
+/* ════════════════════════════════
+   STATS
+════════════════════════════════ */
 function dateKey(month, day) {
   return `${currentYear}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
 }
-
-function daysInMonth(month) {
-  return new Date(currentYear, month + 1, 0).getDate();
-}
-
-function firstDowSunday(month) {
-  return new Date(currentYear, month, 1).getDay();
-}
+function daysInMonth(month) { return new Date(currentYear, month + 1, 0).getDate(); }
+function firstDow(month) { return new Date(currentYear, month, 1).getDay(); }
 
 function computeStats() {
   let total = 0, activeDays = 0;
   Object.values(state).forEach(v => { total += v; if (v > 0) activeDays++; });
-
   let streak = 0;
   let d = new Date(currentYear, currentMonth, currentDay);
   while (true) {
     const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
     if (!state[k]) break;
-    streak++;
-    d.setDate(d.getDate() - 1);
+    streak++; d.setDate(d.getDate() - 1);
   }
-
   let best = 0, run = 0;
   const allKeys = Object.keys(state).filter(k => state[k] > 0).sort();
   allKeys.forEach((k, i) => {
     if (i === 0) { run = 1; best = 1; return; }
     const diff = (new Date(k) - new Date(allKeys[i-1])) / 86400000;
-    if (diff === 1) { run++; if (run > best) best = run; }
-    else run = 1;
+    if (diff === 1) { run++; if (run > best) best = run; } else run = 1;
   });
-
   return { total, activeDays, streak, best };
 }
 
 function renderStats() {
   const s = computeStats();
-  document.getElementById('stat-total').textContent = s.total;
-  document.getElementById('stat-days').textContent = s.activeDays;
+  document.getElementById('stat-total').textContent  = s.total;
+  document.getElementById('stat-days').textContent   = s.activeDays;
   document.getElementById('stat-streak').textContent = s.streak;
-  document.getElementById('stat-best').textContent = s.best;
+  document.getElementById('stat-best').textContent   = s.best;
 }
 
+/* ════════════════════════════════
+   CALENDAR RENDER
+════════════════════════════════ */
 function renderCalendars() {
   const grid = document.getElementById('year-grid');
   grid.innerHTML = '';
-
   for (let m = 0; m < 12; m++) {
     const isCurrent = m === currentMonth;
     const days = daysInMonth(m);
-    const offset = firstDowSunday(m);
-
+    const offset = firstDow(m);
     let mActive = 0;
-    for (let d = 1; d <= days; d++) {
-      if ((state[dateKey(m, d)] || 0) > 0) mActive++;
-    }
+    for (let d = 1; d <= days; d++) if ((state[dateKey(m, d)] || 0) > 0) mActive++;
 
     const card = document.createElement('div');
     card.className = 'month-card' + (isCurrent ? ' is-current' : '');
 
     const hdr = document.createElement('div');
     hdr.className = 'month-header';
-    hdr.innerHTML = `<div class="month-name">${MONTH_NAMES[m]}</div><div class="month-count">${mActive > 0 ? mActive + ' days' : ''}</div>`;
+    hdr.innerHTML = `<div class="month-name">${MONTH_NAMES[m]}</div><div class="month-count">${mActive > 0 ? mActive + 'd' : ''}</div>`;
     card.appendChild(hdr);
 
     const dowRow = document.createElement('div');
@@ -392,13 +452,11 @@ function renderCalendars() {
 
     const dayGrid = document.createElement('div');
     dayGrid.className = 'day-grid';
-
     for (let i = 0; i < offset; i++) {
       const e = document.createElement('div');
       e.className = 'day-cell empty';
       dayGrid.appendChild(e);
     }
-
     for (let d = 1; d <= days; d++) {
       const k = dateKey(m, d);
       const level = state[k] || 0;
@@ -408,18 +466,21 @@ function renderCalendars() {
       cell.title = `${MONTH_NAMES[m]} ${d} · Lv ${level}`;
       cell.addEventListener('click', () => {
         state[k] = ((state[k] || 0) + 1) % 5;
-        saveState(state);
+        saveLocal(state);
+        scheduleCloudWrite();
         renderCalendars();
         renderStats();
       });
       dayGrid.appendChild(cell);
     }
-
     card.appendChild(dayGrid);
     grid.appendChild(card);
   }
 }
 
+/* ════════════════════════════════
+   CLOCK
+════════════════════════════════ */
 function updateClock() {
   const n = new Date();
   const hh = String(n.getHours()).padStart(2,'0');
@@ -428,23 +489,46 @@ function updateClock() {
   document.getElementById('clock').textContent = `${hh}:${mm}:${ss}`;
   const WD = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
   const MO = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  document.getElementById('date-str').textContent =
-    `${WD[n.getDay()]} ${n.getDate()} ${MO[n.getMonth()]} ${n.getFullYear()}`;
+  document.getElementById('date-str').textContent = `${WD[n.getDay()]} ${n.getDate()} ${MO[n.getMonth()]} ${n.getFullYear()}`;
 }
 
-document.getElementById('reset-btn').addEventListener('click', () => {
+/* ════════════════════════════════
+   RESET
+════════════════════════════════ */
+document.getElementById('btn-reset').addEventListener('click', () => {
   if (confirm('모든 기록을 초기화할까요?')) {
     state = {};
-    saveState(state);
+    saveLocal(state);
+    cloudWrite(state);
     renderCalendars();
     renderStats();
   }
 });
 
+/* ════════════════════════════════
+   INIT
+════════════════════════════════ */
 setInterval(updateClock, 1000);
 updateClock();
 renderCalendars();
 renderStats();
+
+// on load: pull from cloud if configured
+(async () => {
+  if (apiKey && binId) {
+    const remote = await cloudRead();
+    if (remote && Object.keys(remote).length > 0) {
+      Object.keys(remote).forEach(k => {
+        state[k] = Math.max(state[k] || 0, remote[k] || 0);
+      });
+      saveLocal(state);
+      renderCalendars();
+      renderStats();
+    }
+  } else {
+    setSyncDot('');
+  }
+})();
 </script>
 </body>
 </html>
