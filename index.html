@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Assong's Step Up Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ffffff;
+      --surface: #f8f9fc;
+      --surface2: #eef0f5;
+      --border: #e0e4ed;
+      --text: #1a1f2e;
+      --text-muted: #7a8299;
+      --text-dim: #b8bfcc;
+      --blue1: #dbeafe;
+      --blue2: #93c5fd;
+      --blue3: #3b82f6;
+      --blue4: #1d4ed8;
+      --accent: #3b82f6;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      padding: 0 0 4rem;
+    }
+
+    /* HEADER */
+    header {
+      padding: 2.5rem 2rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+      box-shadow: 0 1px 0 var(--border);
+    }
+
+    .header-left h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 6vw, 3.8rem);
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: var(--text);
+    }
+
+    .header-left h1 span {
+      color: var(--accent);
+    }
+
+    .header-right {
+      text-align: right;
+    }
+
+    #clock {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.4rem, 4vw, 2.4rem);
+      letter-spacing: 0.06em;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    #date-str {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* LEGEND */
+    .legend {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+
+    .legend-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+
+    .legend-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+    }
+
+    .legend-dot.l0 { background: var(--surface2); }
+    .legend-dot.l1 { background: var(--blue1); }
+    .legend-dot.l2 { background: var(--blue2); }
+    .legend-dot.l3 { background: var(--blue3); }
+    .legend-dot.l4 { background: var(--blue4); }
+
+    .legend-arrow {
+      color: var(--text-dim);
+      font-size: 0.85rem;
+    }
+
+    .legend-tip {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-left: auto;
+    }
+
+    /* YEAR GRID */
+    .year-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      padding: 1.2rem 2rem;
+    }
+
+    /* MONTH CARD */
+    .month-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem;
+      transition: border-color 0.2s;
+    }
+
+    .month-card.is-current {
+      border-color: var(--accent);
+    }
+
+    .month-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0.9rem;
+    }
+
+    .month-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .month-card.is-current .month-name {
+      color: var(--accent);
+    }
+
+    .month-count {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+    }
+
+    .month-card.is-current .month-count {
+      color: var(--blue3);
+    }
+
+    /* DOW HEADER */
+    .dow-row {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+      margin-bottom: 2px;
+    }
+
+    .dow-cell {
+      text-align: center;
+      font-size: 0.6rem;
+      color: var(--text-dim);
+      letter-spacing: 0.05em;
+      padding: 2px 0;
+    }
+
+    /* DAY GRID */
+    .day-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 2px;
+    }
+
+    .day-cell {
+      aspect-ratio: 1;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: transform 0.08s, opacity 0.1s;
+      position: relative;
+    }
+
+    .day-cell:active { transform: scale(0.88); }
+
+    .day-cell.empty {
+      background: transparent;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    .day-cell.l0 { background: var(--surface2); }
+    .day-cell.l1 { background: var(--blue1); }
+    .day-cell.l2 { background: var(--blue2); }
+    .day-cell.l3 { background: var(--blue3); }
+    .day-cell.l4 { background: var(--blue4); }
+
+    .day-cell.today::after {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border-radius: 5px;
+      border: 2px solid var(--accent);
+      pointer-events: none;
+    }
+
+    .day-cell:hover:not(.empty) {
+      opacity: 0.8;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      display: flex;
+      gap: 2rem;
+      padding: 1rem 2rem 0;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 0.04em;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* RESET BTN */
+    .reset-btn {
+      margin: 0 2rem 0 auto;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+      display: block;
+    }
+
+    .reset-btn:hover {
+      border-color: var(--blue3);
+      color: var(--blue3);
+    }
+
+    .controls-row {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 2rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 1.5rem 1rem 1rem; }
+      .year-grid { padding: 1rem; gap: 1rem; }
+      .stats-bar { padding: 0.8rem 1rem 0; }
+      .controls-row { padding: 0.6rem 1rem; }
+      .legend { padding: 0.8rem 1rem; }
+      .reset-btn { margin: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-left">
+    <h1><span>Assong</span>'s Step Up Tracker</h1>
+  </div>
+  <div class="header-right">
+    <div id="clock">00:00:00</div>
+    <div id="date-str">Loading...</div>
+  </div>
+</header>
+
+<div class="controls-row">
+  <div class="stats-bar" id="stats-bar" style="padding:0; flex:1; gap:1.5rem;">
+    <div class="stat-item">
+      <div class="stat-value" id="stat-total">0</div>
+      <div class="stat-label">Total Logs</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="stat-days">0</div>
+      <div class="stat-label">Active Days</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="stat-streak">0</div>
+      <div class="stat-label">Current Streak</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="stat-best">0</div>
+      <div class="stat-label">Best Streak</div>
+    </div>
+  </div>
+  <button class="reset-btn" id="reset-btn">Reset All</button>
+</div>
+
+<div class="legend">
+  <span class="legend-label">Level</span>
+  <div class="legend-dots">
+    <div class="legend-dot l0"></div>
+    <span class="legend-arrow">→</span>
+    <div class="legend-dot l1"></div>
+    <span class="legend-arrow">→</span>
+    <div class="legend-dot l2"></div>
+    <span class="legend-arrow">→</span>
+    <div class="legend-dot l3"></div>
+    <span class="legend-arrow">→</span>
+    <div class="legend-dot l4"></div>
+  </div>
+  <span class="legend-tip">클릭으로 레벨 업 · 5번째 클릭 시 초기화</span>
+</div>
+
+<div class="year-grid" id="year-grid"></div>
+
+<script>
+const MONTH_NAMES = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const DOW = ['M','T','W','T','F','S','S'];
+const STORAGE_KEY = 'assong_tracker_2026';
+
+function loadState() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch { return {}; }
+}
+function saveState(s) {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(s)); } catch {}
+}
+
+let state = loadState();
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth();
+const currentDay = now.getDate();
+
+function dateKey(month, day) {
+  return `${currentYear}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+}
+
+function daysInMonth(month) {
+  return new Date(currentYear, month + 1, 0).getDate();
+}
+
+function firstDow(month) {
+  let d = new Date(currentYear, month, 1).getDay();
+  return d === 0 ? 6 : d - 1;
+}
+
+function computeStats() {
+  let total = 0, activeDays = 0;
+  Object.values(state).forEach(v => { total += v; if (v > 0) activeDays++; });
+
+  // streak — walk backward from today
+  let streak = 0;
+  let d = new Date(currentYear, currentMonth, currentDay);
+  while (true) {
+    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if (!state[k]) break;
+    streak++;
+    d.setDate(d.getDate() - 1);
+  }
+
+  // best streak
+  let best = 0, run = 0;
+  const allKeys = Object.keys(state).filter(k => state[k] > 0).sort();
+  allKeys.forEach((k, i) => {
+    if (i === 0) { run = 1; best = 1; return; }
+    const prev = new Date(allKeys[i-1]);
+    const cur = new Date(k);
+    const diff = (cur - prev) / 86400000;
+    if (diff === 1) { run++; if (run > best) best = run; }
+    else { run = 1; }
+  });
+
+  return { total, activeDays, streak, best };
+}
+
+function renderStats() {
+  const s = computeStats();
+  document.getElementById('stat-total').textContent = s.total;
+  document.getElementById('stat-days').textContent = s.activeDays;
+  document.getElementById('stat-streak').textContent = s.streak;
+  document.getElementById('stat-best').textContent = s.best;
+}
+
+function renderCalendars() {
+  const grid = document.getElementById('year-grid');
+  grid.innerHTML = '';
+
+  for (let m = 0; m < 12; m++) {
+    const isCurrent = m === currentMonth;
+    const days = daysInMonth(m);
+    const offset = firstDow(m);
+
+    // count active days this month
+    let mActive = 0;
+    for (let d = 1; d <= days; d++) {
+      if ((state[dateKey(m, d)] || 0) > 0) mActive++;
+    }
+
+    const card = document.createElement('div');
+    card.className = 'month-card' + (isCurrent ? ' is-current' : '');
+
+    // header
+    const header = document.createElement('div');
+    header.className = 'month-header';
+    header.innerHTML = `<div class="month-name">${MONTH_NAMES[m]}</div><div class="month-count">${mActive > 0 ? mActive + ' days' : ''}</div>`;
+    card.appendChild(header);
+
+    // dow row
+    const dowRow = document.createElement('div');
+    dowRow.className = 'dow-row';
+    DOW.forEach(d => {
+      const c = document.createElement('div');
+      c.className = 'dow-cell';
+      c.textContent = d;
+      dowRow.appendChild(c);
+    });
+    card.appendChild(dowRow);
+
+    // day grid
+    const dayGrid = document.createElement('div');
+    dayGrid.className = 'day-grid';
+
+    // empty cells
+    for (let i = 0; i < offset; i++) {
+      const e = document.createElement('div');
+      e.className = 'day-cell empty';
+      dayGrid.appendChild(e);
+    }
+
+    for (let d = 1; d <= days; d++) {
+      const k = dateKey(m, d);
+      const level = state[k] || 0;
+      const isToday = isCurrent && d === currentDay;
+      const cell = document.createElement('div');
+      cell.className = `day-cell l${level}${isToday ? ' today' : ''}`;
+      cell.title = `${MONTH_NAMES[m]} ${d} · Level ${level}`;
+      cell.addEventListener('click', () => {
+        state[k] = ((state[k] || 0) + 1) % 5;
+        saveState(state);
+        renderCalendars();
+        renderStats();
+      });
+      dayGrid.appendChild(cell);
+    }
+
+    card.appendChild(dayGrid);
+    grid.appendChild(card);
+  }
+}
+
+// Clock
+function updateClock() {
+  const n = new Date();
+  const h = String(n.getHours()).padStart(2,'0');
+  const mi = String(n.getMinutes()).padStart(2,'0');
+  const s = String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent = `${h}:${mi}:${s}`;
+
+  const days = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  document.getElementById('date-str').textContent =
+    `${days[n.getDay()]}  ${n.getDate()} ${months[n.getMonth()]} ${n.getFullYear()}`;
+}
+
+document.getElementById('reset-btn').addEventListener('click', () => {
+  if (confirm('모든 기록을 초기화할까요?')) {
+    state = {};
+    saveState(state);
+    renderCalendars();
+    renderStats();
+  }
+});
+
+setInterval(updateClock, 1000);
+updateClock();
+renderCalendars();
+renderStats();
+</script>
+</body>
+</html>
