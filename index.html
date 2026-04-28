@@ -22,6 +22,7 @@
       --blue4: #1d4ed8;
       --accent: #3b82f6;
       --red: #f87171;
+      --green: #4ade80;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
@@ -33,19 +34,15 @@
       border-bottom: 1px solid var(--border);
       background: var(--bg);
       position: sticky; top: 0; z-index: 10;
-      gap: 0.8rem; flex-wrap: nowrap;
+      gap: 0.8rem;
     }
-    .header-left { display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 0; overflow: hidden; }
-    h1 {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(1.3rem, 2vw, 2rem);
-      letter-spacing: 0.04em; line-height: 1; white-space: nowrap; flex-shrink: 0;
-    }
+    .header-left { display: flex; align-items: center; gap: 1rem; flex: 1; min-width: 0; }
+    h1 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.3rem, 2vw, 2rem); letter-spacing: 0.04em; line-height: 1; white-space: nowrap; flex-shrink: 0; }
     h1 span { color: var(--accent); }
 
     .stats-inline { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; }
     .stat-pill { display: flex; align-items: baseline; gap: 3px; font-size: 0.68rem; color: var(--text-muted); white-space: nowrap; }
-    .stat-pill strong { font-family: 'Bebas Neue', sans-serif; font-size: 0.98rem; letter-spacing: 0.04em; color: var(--accent); font-weight: 400; }
+    .stat-pill strong { font-family: 'Bebas Neue', sans-serif; font-size: 0.98rem; color: var(--accent); font-weight: 400; }
     .stat-div { width: 1px; height: 11px; background: var(--border); flex-shrink: 0; }
 
     .legend-inline { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
@@ -62,25 +59,35 @@
     #date-str { font-size: 0.64rem; color: var(--text-muted); letter-spacing: 0.07em; text-transform: uppercase; }
 
     .icon-btn {
-      background: none; border: 1px solid var(--border); color: var(--text-dim);
+      background: none; border: 1px solid var(--border); color: var(--text-muted);
       font-size: 0.6rem; letter-spacing: 0.06em; text-transform: uppercase;
       padding: 3px 8px; border-radius: 4px; cursor: pointer;
-      transition: border-color 0.15s, color 0.15s; white-space: nowrap;
+      transition: border-color 0.15s, color 0.15s; white-space: nowrap; font-family: 'DM Sans', sans-serif;
     }
     .icon-btn:hover { border-color: var(--blue3); color: var(--blue3); }
     .icon-btn.danger:hover { border-color: var(--red); color: var(--red); }
 
-    /* sync status dot */
-    #sync-dot {
-      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
-      background: var(--text-dim); transition: background 0.3s;
+    #sync-status {
+      display: flex; align-items: center; gap: 5px;
+      font-size: 0.62rem; color: var(--text-dim); white-space: nowrap;
     }
-    #sync-dot.ok { background: #4ade80; }
+    #sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dim); transition: background 0.3s; flex-shrink: 0; }
+    #sync-dot.ok { background: var(--green); }
     #sync-dot.err { background: var(--red); }
     #sync-dot.loading { background: #facc15; animation: pulse 0.8s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.35} }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    /* ─── YEAR GRID: 4×3 ─── */
+    /* ─── SETUP BANNER (shown when not configured) ─── */
+    #setup-banner {
+      display: none;
+      background: #fffbeb; border-bottom: 1px solid #fde68a;
+      padding: 0.5rem 1.2rem; font-size: 0.74rem; color: #92400e;
+      align-items: center; gap: 0.6rem;
+    }
+    #setup-banner.show { display: flex; }
+    #setup-banner a { color: var(--blue3); font-weight: 500; cursor: pointer; }
+
+    /* ─── YEAR GRID ─── */
     .year-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -90,24 +97,20 @@
 
     /* ─── MONTH CARD ─── */
     .month-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 0.5rem 0.55rem 0.55rem;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 7px; padding: 0.5rem 0.55rem 0.55rem;
       transition: border-color 0.2s;
     }
     .month-card.is-current { border-color: var(--accent); }
-
     .month-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.35rem; }
     .month-name { font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 0.07em; color: var(--text-muted); }
     .month-card.is-current .month-name { color: var(--accent); }
-    .month-count { font-size: 0.54rem; color: var(--text-dim); letter-spacing: 0.05em; }
+    .month-count { font-size: 0.54rem; color: var(--text-dim); }
     .month-card.is-current .month-count { color: var(--blue3); }
 
     .dow-row { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.5px; margin-bottom: 1.5px; }
     .dow-cell { text-align: center; font-size: 0.48rem; color: var(--text-dim); padding: 1px 0; }
-    .dow-cell.sun { color: #f87171; }
-    .dow-cell.sat { color: #93c5fd; }
+    .dow-cell.sun { color: #f87171; } .dow-cell.sat { color: #93c5fd; }
 
     .day-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 1.5px; }
     .day-cell { aspect-ratio: 1; border-radius: 2px; cursor: pointer; transition: transform 0.08s, opacity 0.1s; position: relative; }
@@ -118,84 +121,86 @@
     .day-cell.l2 { background: var(--blue2); }
     .day-cell.l3 { background: var(--blue3); }
     .day-cell.l4 { background: var(--blue4); }
-    .day-cell.today::after {
-      content: ''; position: absolute; inset: -2px; border-radius: 4px;
-      border: 2px solid var(--accent); pointer-events: none;
-    }
+    .day-cell.today::after { content:''; position:absolute; inset:-2px; border-radius:4px; border:2px solid var(--accent); pointer-events:none; }
     .day-cell:hover:not(.empty) { opacity: 0.72; }
 
-    /* ─── SETUP MODAL ─── */
-    .modal-bg {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.35); z-index: 100;
-      align-items: center; justify-content: center;
+    /* ─── MODAL ─── */
+    .modal-bg { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.35); z-index:100; align-items:center; justify-content:center; }
+    .modal-bg.open { display:flex; }
+    .modal { background:#fff; border:1px solid var(--border); border-radius:12px; padding:1.8rem 2rem; width:min(520px,94vw); box-shadow:0 8px 32px rgba(0,0,0,0.14); }
+    .modal h2 { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:0.04em; margin-bottom:0.4rem; }
+    .modal h2 span { color:var(--accent); }
+    .modal .sub { font-size:0.78rem; color:var(--text-muted); line-height:1.65; margin-bottom:1.3rem; }
+    .modal .sub a { color:var(--blue3); }
+    .field-group { margin-bottom:0.85rem; }
+    .field-group label { display:block; font-size:0.7rem; color:var(--text-muted); letter-spacing:0.06em; text-transform:uppercase; margin-bottom:4px; }
+    .field-group input {
+      width:100%; border:1px solid var(--border); border-radius:6px;
+      padding:7px 10px; font-size:0.82rem; font-family:'DM Sans',sans-serif;
+      color:var(--text); outline:none; transition:border-color 0.15s;
     }
-    .modal-bg.open { display: flex; }
-    .modal {
-      background: #fff; border: 1px solid var(--border); border-radius: 12px;
-      padding: 1.8rem 2rem; width: min(480px, 92vw); box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-    }
-    .modal h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 0.04em; margin-bottom: 0.3rem; }
-    .modal h2 span { color: var(--accent); }
-    .modal p { font-size: 0.78rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.2rem; }
-    .modal p a { color: var(--blue3); }
-    .modal label { display: block; font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
-    .modal input {
-      width: 100%; border: 1px solid var(--border); border-radius: 6px;
-      padding: 7px 10px; font-size: 0.82rem; font-family: 'DM Sans', sans-serif;
-      color: var(--text); outline: none; margin-bottom: 0.9rem;
-      transition: border-color 0.15s;
-    }
-    .modal input:focus { border-color: var(--blue3); }
-    .modal-actions { display: flex; gap: 0.6rem; justify-content: flex-end; margin-top: 0.5rem; }
-    .btn-primary {
-      background: var(--blue3); color: #fff; border: none;
-      padding: 7px 18px; border-radius: 6px; font-family: 'DM Sans', sans-serif;
-      font-size: 0.78rem; cursor: pointer; transition: background 0.15s;
-    }
-    .btn-primary:hover { background: var(--blue4); }
-    .btn-secondary {
-      background: none; border: 1px solid var(--border); color: var(--text-muted);
-      padding: 7px 14px; border-radius: 6px; font-family: 'DM Sans', sans-serif;
-      font-size: 0.78rem; cursor: pointer; transition: border-color 0.15s;
-    }
-    .btn-secondary:hover { border-color: var(--blue3); color: var(--blue3); }
-    .modal-note { font-size: 0.68rem; color: var(--text-dim); line-height: 1.5; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid var(--border); }
-    .modal-note code { background: var(--surface2); padding: 1px 4px; border-radius: 3px; font-size: 0.66rem; }
+    .field-group input:focus { border-color:var(--blue3); }
+    .modal-actions { display:flex; gap:0.6rem; justify-content:flex-end; margin-top:1rem; }
+    .btn-primary { background:var(--blue3); color:#fff; border:none; padding:7px 18px; border-radius:6px; font-family:'DM Sans',sans-serif; font-size:0.78rem; cursor:pointer; transition:background 0.15s; }
+    .btn-primary:hover { background:var(--blue4); }
+    .btn-secondary { background:none; border:1px solid var(--border); color:var(--text-muted); padding:7px 14px; border-radius:6px; font-family:'DM Sans',sans-serif; font-size:0.78rem; cursor:pointer; }
+    .btn-secondary:hover { border-color:var(--blue3); color:var(--blue3); }
 
-    @media (max-width: 900px) { .year-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 600px) {
-      .year-grid { grid-template-columns: repeat(2, 1fr); padding: 0.5rem; }
-      header { flex-wrap: wrap; padding: 0.5rem 0.7rem; }
+    .steps { background:var(--surface); border-radius:8px; padding:1rem 1.1rem; margin-top:1rem; }
+    .steps h3 { font-size:0.72rem; letter-spacing:0.07em; text-transform:uppercase; color:var(--text-muted); margin-bottom:0.55rem; }
+    .steps ol { padding-left:1.1rem; }
+    .steps li { font-size:0.72rem; color:var(--text-muted); line-height:1.75; }
+    .steps li a { color:var(--blue3); }
+    .steps code { background:var(--surface2); padding:1px 5px; border-radius:3px; font-size:0.68rem; font-family:monospace; }
+
+    @media (max-width:900px) { .year-grid { grid-template-columns:repeat(3,1fr); } }
+    @media (max-width:600px) {
+      .year-grid { grid-template-columns:repeat(2,1fr); padding:0.5rem; }
+      header { flex-wrap:wrap; padding:0.5rem 0.7rem; }
     }
   </style>
 </head>
 <body>
 
-<!-- SETUP MODAL -->
+<!-- FIREBASE CONFIG MODAL -->
 <div class="modal-bg" id="modal-bg">
   <div class="modal">
-    <h2><span>Cloud</span> Sync 설정</h2>
-    <p>
-      JSONBin.io를 이용해 데이터를 클라우드에 저장합니다.<br>
-      <a href="https://jsonbin.io" target="_blank">jsonbin.io</a>에서 무료 계정을 만들고 API Key를 발급받으세요.
+    <h2><span>Firebase</span> 설정</h2>
+    <p class="sub">
+      Firebase Realtime Database를 연결하면 <strong>모든 접속자가 동일한 데이터를 실시간으로 공유</strong>합니다.<br>
+      완전 무료 (Spark 플랜, 1GB 저장공간)이며 설정은 최초 1회만 필요합니다.
     </p>
-    <label>JSONBin Master Key (X-Master-Key)</label>
-    <input type="password" id="input-apikey" placeholder="$2a$10$..." autocomplete="off" />
-    <label>Bin ID <span style="font-weight:300;text-transform:none;">(처음이면 비워두세요 — 자동 생성)</span></label>
-    <input type="text" id="input-binid" placeholder="자동 생성됨" autocomplete="off" />
+
+    <div class="field-group">
+      <label>Firebase Database URL</label>
+      <input type="text" id="input-dburl" placeholder="https://your-project-default-rtdb.firebaseio.com" autocomplete="off" />
+    </div>
+    <div class="field-group">
+      <label>Web API Key</label>
+      <input type="text" id="input-apikey" placeholder="AIzaSy..." autocomplete="off" />
+    </div>
+
+    <div class="steps">
+      <h3>📋 설정 방법 (5분)</h3>
+      <ol>
+        <li><a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a> → 새 프로젝트 생성</li>
+        <li>왼쪽 메뉴 <strong>Realtime Database</strong> → <strong>데이터베이스 만들기</strong> → <strong>테스트 모드</strong> 선택</li>
+        <li>생성된 URL 복사 (예: <code>https://xxx-rtdb.firebaseio.com</code>) → 위 첫 번째 입력칸에 붙여넣기</li>
+        <li>프로젝트 설정(⚙) → <strong>일반</strong> 탭 → <strong>웹 API 키</strong> 복사 → 두 번째 입력칸에 붙여넣기</li>
+        <li><strong>저장 & 연결</strong> 클릭 — 끝!</li>
+      </ol>
+    </div>
+
     <div class="modal-actions">
       <button class="btn-secondary" id="modal-cancel">취소</button>
       <button class="btn-primary" id="modal-save">저장 &amp; 연결</button>
     </div>
-    <div class="modal-note">
-      <strong>설정 방법:</strong><br>
-      1. <a href="https://jsonbin.io" target="_blank" style="color:var(--blue3)">jsonbin.io</a> 가입 후 <code>API Keys</code> 메뉴에서 <code>Master Key</code> 복사<br>
-      2. 위 입력창에 붙여넣고 <em>저장 &amp; 연결</em> 클릭<br>
-      3. Bin ID는 첫 저장 시 자동 생성됩니다 (이후 표시됨)<br>
-      4. 다른 기기에서 사용 시 동일한 API Key + Bin ID 입력
-    </div>
   </div>
+</div>
+
+<div id="setup-banner">
+  ⚠️ Firebase가 연결되지 않았습니다. 현재 이 기기에만 저장됩니다.
+  <a id="banner-setup-link">지금 설정하기 →</a>
 </div>
 
 <header>
@@ -211,54 +216,51 @@
       <div class="stat-pill"><strong id="stat-best">0</strong> best</div>
       <div class="stat-div"></div>
       <div class="legend-inline">
-        <div class="legend-dot l0"></div>
-        <span class="legend-arr">›</span>
-        <div class="legend-dot l1"></div>
-        <span class="legend-arr">›</span>
-        <div class="legend-dot l2"></div>
-        <span class="legend-arr">›</span>
-        <div class="legend-dot l3"></div>
-        <span class="legend-arr">›</span>
+        <div class="legend-dot l0"></div><span class="legend-arr">›</span>
+        <div class="legend-dot l1"></div><span class="legend-arr">›</span>
+        <div class="legend-dot l2"></div><span class="legend-arr">›</span>
+        <div class="legend-dot l3"></div><span class="legend-arr">›</span>
         <div class="legend-dot l4"></div>
       </div>
     </div>
   </div>
   <div class="header-right">
-    <div id="sync-dot" title="동기화 상태"></div>
+    <div id="sync-status">
+      <div id="sync-dot"></div>
+      <span id="sync-label">로컬</span>
+    </div>
     <div id="clock">00:00:00</div>
-    <div id="date-str">Loading...</div>
-    <button class="icon-btn" id="btn-sync" title="수동 동기화">↻ Sync</button>
-    <button class="icon-btn" id="btn-settings">⚙ Cloud</button>
+    <div id="date-str"></div>
+    <button class="icon-btn" id="btn-firebase">🔥 Firebase</button>
     <button class="icon-btn danger" id="btn-reset">Reset</button>
   </div>
 </header>
 
 <div class="year-grid" id="year-grid"></div>
 
-<script>
-/* ════════════════════════════════
-   CONFIG & STATE
-════════════════════════════════ */
-const MONTH_NAMES = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-const DOW = ['S','M','T','W','T','F','S'];
-const LS_STATE   = 'assong_tracker_v3_state';
-const LS_APIKEY  = 'assong_tracker_v3_apikey';
-const LS_BINID   = 'assong_tracker_v3_binid';
-const JSONBIN_URL = 'https://api.jsonbin.io/v3/b';
+<!-- Firebase SDK (compat version — works without bundler) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-const now = new Date();
+<script>
+/* ════════════ CONSTANTS ════════════ */
+const MONTH_NAMES = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+const DOW         = ['S','M','T','W','T','F','S'];
+const LS_STATE    = 'assong_v4_state';
+const LS_DBURL    = 'assong_v4_dburl';
+const LS_APIKEY   = 'assong_v4_apikey';
+const DB_PATH     = 'tracker/2026';
+
+const now          = new Date();
 const currentYear  = now.getFullYear();
 const currentMonth = now.getMonth();
 const currentDay   = now.getDate();
 
-let state   = loadLocal();
-let apiKey  = localStorage.getItem(LS_APIKEY) || '';
-let binId   = localStorage.getItem(LS_BINID)  || '';
-let syncTimer = null;
+/* ════════════ STATE ════════════ */
+let state  = loadLocal();
+let dbRef  = null;   // Firebase DB reference
+let fbApp  = null;
 
-/* ════════════════════════════════
-   LOCAL STORAGE
-════════════════════════════════ */
 function loadLocal() {
   try { return JSON.parse(localStorage.getItem(LS_STATE) || '{}'); } catch { return {}; }
 }
@@ -266,208 +268,181 @@ function saveLocal(s) {
   try { localStorage.setItem(LS_STATE, JSON.stringify(s)); } catch {}
 }
 
-/* ════════════════════════════════
-   JSONBIN CLOUD SYNC
-════════════════════════════════ */
-function setSyncDot(status) {
+/* ════════════ FIREBASE ════════════ */
+function setSyncStatus(status, label) {
   const dot = document.getElementById('sync-dot');
-  dot.className = '';
-  if (status) dot.classList.add(status);
+  dot.className = status; // 'ok' | 'err' | 'loading' | ''
+  document.getElementById('sync-label').textContent = label;
 }
 
-async function cloudRead() {
-  if (!apiKey || !binId) return null;
-  setSyncDot('loading');
+function initFirebase(dbUrl, apiKey) {
   try {
-    const res = await fetch(`${JSONBIN_URL}/${binId}/latest`, {
-      headers: { 'X-Master-Key': apiKey }
+    if (fbApp) { fbApp.delete(); fbApp = null; dbRef = null; }
+
+    fbApp = firebase.initializeApp({
+      apiKey:      apiKey,
+      databaseURL: dbUrl,
+    }, 'assong-' + Date.now());
+
+    const db = firebase.database(fbApp);
+    dbRef = db.ref(DB_PATH);
+
+    setSyncStatus('loading', '연결 중...');
+
+    // Real-time listener — all clients stay in sync automatically
+    dbRef.on('value', snapshot => {
+      const remote = snapshot.val() || {};
+      // merge: take max level per key so no data is lost
+      let changed = false;
+      Object.keys(remote).forEach(fbKey => {
+        const localKey = fbKey.replace(/_/g, '-');
+        const merged = Math.max(state[localKey] || 0, remote[fbKey] || 0);
+        if (merged !== (state[localKey] || 0)) changed = true;
+        state[localKey] = merged;
+      });
+      saveLocal(state);
+      if (changed) { renderCalendars(); renderStats(); }
+      setSyncStatus('ok', '실시간 연결됨');
+    }, err => {
+      setSyncStatus('err', '연결 오류');
+      console.error(err);
     });
-    if (!res.ok) throw new Error(res.status);
-    const json = await res.json();
-    setSyncDot('ok');
-    return json.record || {};
-  } catch (e) {
-    setSyncDot('err');
-    return null;
+
+    document.getElementById('setup-banner').classList.remove('show');
+    localStorage.setItem(LS_DBURL,  dbUrl);
+    localStorage.setItem(LS_APIKEY, apiKey);
+    return true;
+  } catch(e) {
+    setSyncStatus('err', '설정 오류');
+    console.error(e);
+    return false;
   }
 }
 
-async function cloudWrite(data) {
-  if (!apiKey) return;
-  setSyncDot('loading');
+async function writeToFirebase(localKey, value) {
+  if (!dbRef) return;
   try {
-    if (!binId) {
-      // create new bin
-      const res = await fetch(JSONBIN_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey, 'X-Bin-Name': "assong-tracker" },
-        body: JSON.stringify(data)
-      });
-      if (!res.ok) throw new Error(res.status);
-      const json = await res.json();
-      binId = json.metadata.id;
-      localStorage.setItem(LS_BINID, binId);
-      document.getElementById('input-binid').value = binId;
-    } else {
-      const res = await fetch(`${JSONBIN_URL}/${binId}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', 'X-Master-Key': apiKey },
-        body: JSON.stringify(data)
-      });
-      if (!res.ok) throw new Error(res.status);
-    }
-    setSyncDot('ok');
-  } catch (e) {
-    setSyncDot('err');
+    // Firebase paths cannot contain dashes; convert 2026-04-28 → 2026_04_28
+    const fbKey = localKey.replace(/-/g, '_');
+    await dbRef.child(fbKey).set(value);
+  } catch(e) {
+    setSyncStatus('err', '저장 실패');
   }
 }
 
-/* debounced write: waits 1.5s after last click */
-function scheduleCloudWrite() {
-  if (!apiKey) return;
-  clearTimeout(syncTimer);
-  syncTimer = setTimeout(() => cloudWrite(state), 1500);
-}
-
-async function manualSync() {
-  if (!apiKey) { openModal(); return; }
-  const remote = await cloudRead();
-  if (remote) {
-    // merge: take max level for each key
-    Object.keys(remote).forEach(k => {
-      state[k] = Math.max(state[k] || 0, remote[k] || 0);
-    });
-    saveLocal(state);
-    renderCalendars();
-    renderStats();
-  }
-}
-
-/* ════════════════════════════════
-   MODAL
-════════════════════════════════ */
+/* ════════════ MODAL ════════════ */
 function openModal() {
-  document.getElementById('input-apikey').value = apiKey;
-  document.getElementById('input-binid').value  = binId;
+  document.getElementById('input-dburl').value  = localStorage.getItem(LS_DBURL)  || '';
+  document.getElementById('input-apikey').value = localStorage.getItem(LS_APIKEY) || '';
   document.getElementById('modal-bg').classList.add('open');
 }
-function closeModal() {
-  document.getElementById('modal-bg').classList.remove('open');
-}
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
 
 document.getElementById('modal-cancel').addEventListener('click', closeModal);
-document.getElementById('modal-bg').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+document.getElementById('modal-bg').addEventListener('click', e => { if(e.target===e.currentTarget) closeModal(); });
+document.getElementById('btn-firebase').addEventListener('click', openModal);
+document.getElementById('banner-setup-link').addEventListener('click', openModal);
 
-document.getElementById('modal-save').addEventListener('click', async () => {
-  apiKey = document.getElementById('input-apikey').value.trim();
-  binId  = document.getElementById('input-binid').value.trim();
-  localStorage.setItem(LS_APIKEY, apiKey);
-  localStorage.setItem(LS_BINID,  binId);
-  closeModal();
-  // immediately pull remote data
-  const remote = await cloudRead();
-  if (remote && Object.keys(remote).length > 0) {
-    Object.keys(remote).forEach(k => {
-      state[k] = Math.max(state[k] || 0, remote[k] || 0);
-    });
-    saveLocal(state);
-    renderCalendars();
-    renderStats();
-  } else if (apiKey) {
-    // push local data to new bin
-    await cloudWrite(state);
-  }
+document.getElementById('modal-save').addEventListener('click', () => {
+  const dbUrl  = document.getElementById('input-dburl').value.trim();
+  const apiKey = document.getElementById('input-apikey').value.trim();
+  if (!dbUrl || !apiKey) { alert('두 항목을 모두 입력해주세요.'); return; }
+  const ok = initFirebase(dbUrl, apiKey);
+  if (ok) closeModal();
 });
 
-document.getElementById('btn-settings').addEventListener('click', openModal);
-document.getElementById('btn-sync').addEventListener('click', manualSync);
+/* ════════════ RESET ════════════ */
+document.getElementById('btn-reset').addEventListener('click', async () => {
+  if (!confirm('모든 기록을 초기화할까요?')) return;
+  state = {};
+  saveLocal(state);
+  if (dbRef) {
+    try { await dbRef.set({}); } catch(e) { setSyncStatus('err','저장 실패'); }
+  }
+  renderCalendars();
+  renderStats();
+});
 
-/* ════════════════════════════════
-   STATS
-════════════════════════════════ */
+/* ════════════ HELPERS ════════════ */
 function dateKey(month, day) {
   return `${currentYear}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
 }
-function daysInMonth(month) { return new Date(currentYear, month + 1, 0).getDate(); }
-function firstDow(month) { return new Date(currentYear, month, 1).getDay(); }
+function daysInMonth(m) { return new Date(currentYear, m+1, 0).getDate(); }
+function firstDow(m)    { return new Date(currentYear, m, 1).getDay(); }
 
 function computeStats() {
-  let total = 0, activeDays = 0;
-  Object.values(state).forEach(v => { total += v; if (v > 0) activeDays++; });
-  let streak = 0;
-  let d = new Date(currentYear, currentMonth, currentDay);
-  while (true) {
-    const k = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    if (!state[k]) break;
-    streak++; d.setDate(d.getDate() - 1);
+  let total=0, activeDays=0;
+  Object.values(state).forEach(v => { total+=v; if(v>0) activeDays++; });
+  let streak=0, d=new Date(currentYear, currentMonth, currentDay);
+  while(true) {
+    const k=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    if(!state[k]) break;
+    streak++; d.setDate(d.getDate()-1);
   }
-  let best = 0, run = 0;
-  const allKeys = Object.keys(state).filter(k => state[k] > 0).sort();
-  allKeys.forEach((k, i) => {
-    if (i === 0) { run = 1; best = 1; return; }
-    const diff = (new Date(k) - new Date(allKeys[i-1])) / 86400000;
-    if (diff === 1) { run++; if (run > best) best = run; } else run = 1;
+  let best=0, run=0;
+  const keys=Object.keys(state).filter(k=>state[k]>0).sort();
+  keys.forEach((k,i)=>{
+    if(i===0){run=1;best=1;return;}
+    const diff=(new Date(k)-new Date(keys[i-1]))/86400000;
+    if(diff===1){run++;if(run>best)best=run;}else run=1;
   });
-  return { total, activeDays, streak, best };
+  return {total,activeDays,streak,best};
 }
 
 function renderStats() {
-  const s = computeStats();
+  const s=computeStats();
   document.getElementById('stat-total').textContent  = s.total;
   document.getElementById('stat-days').textContent   = s.activeDays;
   document.getElementById('stat-streak').textContent = s.streak;
   document.getElementById('stat-best').textContent   = s.best;
 }
 
-/* ════════════════════════════════
-   CALENDAR RENDER
-════════════════════════════════ */
+/* ════════════ CALENDAR ════════════ */
 function renderCalendars() {
   const grid = document.getElementById('year-grid');
   grid.innerHTML = '';
-  for (let m = 0; m < 12; m++) {
+  for (let m=0; m<12; m++) {
     const isCurrent = m === currentMonth;
-    const days = daysInMonth(m);
+    const days   = daysInMonth(m);
     const offset = firstDow(m);
-    let mActive = 0;
-    for (let d = 1; d <= days; d++) if ((state[dateKey(m, d)] || 0) > 0) mActive++;
+    let mActive  = 0;
+    for (let d=1; d<=days; d++) if((state[dateKey(m,d)]||0)>0) mActive++;
 
     const card = document.createElement('div');
-    card.className = 'month-card' + (isCurrent ? ' is-current' : '');
+    card.className = 'month-card'+(isCurrent?' is-current':'');
 
     const hdr = document.createElement('div');
     hdr.className = 'month-header';
-    hdr.innerHTML = `<div class="month-name">${MONTH_NAMES[m]}</div><div class="month-count">${mActive > 0 ? mActive + 'd' : ''}</div>`;
+    hdr.innerHTML = `<div class="month-name">${MONTH_NAMES[m]}</div><div class="month-count">${mActive>0?mActive+'d':''}</div>`;
     card.appendChild(hdr);
 
     const dowRow = document.createElement('div');
     dowRow.className = 'dow-row';
-    DOW.forEach((d, i) => {
-      const c = document.createElement('div');
-      c.className = 'dow-cell' + (i === 0 ? ' sun' : i === 6 ? ' sat' : '');
-      c.textContent = d;
-      dowRow.appendChild(c);
+    DOW.forEach((d,i)=>{
+      const c=document.createElement('div');
+      c.className='dow-cell'+(i===0?' sun':i===6?' sat':'');
+      c.textContent=d; dowRow.appendChild(c);
     });
     card.appendChild(dowRow);
 
     const dayGrid = document.createElement('div');
     dayGrid.className = 'day-grid';
-    for (let i = 0; i < offset; i++) {
-      const e = document.createElement('div');
-      e.className = 'day-cell empty';
-      dayGrid.appendChild(e);
+    for(let i=0;i<offset;i++){
+      const e=document.createElement('div'); e.className='day-cell empty'; dayGrid.appendChild(e);
     }
-    for (let d = 1; d <= days; d++) {
-      const k = dateKey(m, d);
-      const level = state[k] || 0;
-      const isToday = isCurrent && d === currentDay;
-      const cell = document.createElement('div');
-      cell.className = `day-cell l${level}${isToday ? ' today' : ''}`;
-      cell.title = `${MONTH_NAMES[m]} ${d} · Lv ${level}`;
-      cell.addEventListener('click', () => {
-        state[k] = ((state[k] || 0) + 1) % 5;
+    for(let d=1;d<=days;d++){
+      const k=dateKey(m,d);
+      const level=state[k]||0;
+      const isToday=isCurrent&&d===currentDay;
+      const cell=document.createElement('div');
+      cell.className=`day-cell l${level}${isToday?' today':''}`;
+      cell.title=`${MONTH_NAMES[m]} ${d} · Lv${level}`;
+      cell.addEventListener('click', async ()=>{
+        const newLevel = ((state[k]||0)+1)%5;
+        state[k] = newLevel;
         saveLocal(state);
-        scheduleCloudWrite();
+        // write single key to Firebase (fast, minimal bandwidth)
+        await writeToFirebase(k.replace(/-/g,'_'), newLevel);
         renderCalendars();
         renderStats();
       });
@@ -478,57 +453,33 @@ function renderCalendars() {
   }
 }
 
-/* ════════════════════════════════
-   CLOCK
-════════════════════════════════ */
-function updateClock() {
-  const n = new Date();
-  const hh = String(n.getHours()).padStart(2,'0');
-  const mm = String(n.getMinutes()).padStart(2,'0');
-  const ss = String(n.getSeconds()).padStart(2,'0');
-  document.getElementById('clock').textContent = `${hh}:${mm}:${ss}`;
-  const WD = ['SUN','MON','TUE','WED','THU','FRI','SAT'];
-  const MO = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  document.getElementById('date-str').textContent = `${WD[n.getDay()]} ${n.getDate()} ${MO[n.getMonth()]} ${n.getFullYear()}`;
+/* ════════════ CLOCK ════════════ */
+function updateClock(){
+  const n=new Date();
+  const hh=String(n.getHours()).padStart(2,'0');
+  const mm=String(n.getMinutes()).padStart(2,'0');
+  const ss=String(n.getSeconds()).padStart(2,'0');
+  document.getElementById('clock').textContent=`${hh}:${mm}:${ss}`;
+  const WD=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  const MO=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
+  document.getElementById('date-str').textContent=`${WD[n.getDay()]} ${n.getDate()} ${MO[n.getMonth()]} ${n.getFullYear()}`;
 }
 
-/* ════════════════════════════════
-   RESET
-════════════════════════════════ */
-document.getElementById('btn-reset').addEventListener('click', () => {
-  if (confirm('모든 기록을 초기화할까요?')) {
-    state = {};
-    saveLocal(state);
-    cloudWrite(state);
-    renderCalendars();
-    renderStats();
-  }
-});
-
-/* ════════════════════════════════
-   INIT
-════════════════════════════════ */
+/* ════════════ INIT ════════════ */
 setInterval(updateClock, 1000);
 updateClock();
 renderCalendars();
 renderStats();
 
-// on load: pull from cloud if configured
-(async () => {
-  if (apiKey && binId) {
-    const remote = await cloudRead();
-    if (remote && Object.keys(remote).length > 0) {
-      Object.keys(remote).forEach(k => {
-        state[k] = Math.max(state[k] || 0, remote[k] || 0);
-      });
-      saveLocal(state);
-      renderCalendars();
-      renderStats();
-    }
-  } else {
-    setSyncDot('');
-  }
-})();
+// Auto-connect if credentials saved
+const savedDbUrl  = localStorage.getItem(LS_DBURL);
+const savedApiKey = localStorage.getItem(LS_APIKEY);
+if (savedDbUrl && savedApiKey) {
+  initFirebase(savedDbUrl, savedApiKey);
+} else {
+  setSyncStatus('', '로컬 전용');
+  document.getElementById('setup-banner').classList.add('show');
+}
 </script>
 </body>
 </html>
